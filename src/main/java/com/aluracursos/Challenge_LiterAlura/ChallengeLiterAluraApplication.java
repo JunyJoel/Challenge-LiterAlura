@@ -1,8 +1,7 @@
 package com.aluracursos.Challenge_LiterAlura;
 
-import com.aluracursos.Challenge_LiterAlura.model.DatosLibro;
+import com.aluracursos.Challenge_LiterAlura.dto.DataApiResponse;
 import com.aluracursos.Challenge_LiterAlura.principal.Principal;
-import com.google.gson.Gson;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,9 +16,11 @@ public class ChallengeLiterAluraApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Principal principal = new Principal();
-		DatosLibro datos = principal.obtenerDatosLibro();
-		System.out.println(datos.autor());
-		System.out.println(datos.titulo());
+		DataApiResponse datos = principal.obtenerDatosLibro();
+		datos.libros().forEach(d -> {
+			System.out.println(d.titulo());
+			d.autores().forEach(a -> System.out.println(a.nombre()));
+		});
 	}
 
 }

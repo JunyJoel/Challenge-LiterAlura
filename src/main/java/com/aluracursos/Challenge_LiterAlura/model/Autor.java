@@ -1,19 +1,23 @@
 package com.aluracursos.Challenge_LiterAlura.model;
 
-import jakarta.persistence.*;
+import com.aluracursos.Challenge_LiterAlura.dto.DatosAutor;
 
-import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table (name = "autores")
+//@Entity
+//@Table (name = "autores")
 public class Autor {
-    @Id
-    @GeneratedValue (strategy = GenerationType.SEQUENCE)
+    //@Id
+    //@GeneratedValue (strategy = GenerationType.SEQUENCE)
     private Long id;
     private String nombre;
-    private Double nacimiento;
-    private Double defuncion;
-    private String paisDeNacimiento;
+    private String nacimiento;
+    private String defuncion;
     private List<String> libros;
+
+    public Autor(DatosAutor datosAutor) {
+        this.nombre = datosAutor.nombre();
+        this.nacimiento = datosAutor.fechaNacimiento();
+        this.defuncion = datosAutor.fechaDefuncion();
+    }
 }
