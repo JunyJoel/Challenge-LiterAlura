@@ -8,6 +8,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DatosLibro(
         @JsonProperty("title") String titulo,
-        @JsonProperty("authors")List<DatosAutor> autores,
-        @JsonProperty("languages")List<String> idiomas){
+        @JsonProperty("authors") List<DatosAutor> autor,
+        @JsonProperty("languages")List<String> idiomas,
+        @JsonProperty("download_count") Double numeroDeDescargas){
 }

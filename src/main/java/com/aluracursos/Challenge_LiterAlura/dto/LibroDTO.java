@@ -1,8 +1,8 @@
 package com.aluracursos.Challenge_LiterAlura.dto;
 
-public record LibroDTO(Long id,
-                       String titulo,
-                       String autor,
-                       String idioma,
-                       String sumario) {
+import java.util.List;
+
+public record LibroDTO(String titulo,
+                       List<String> autor,
+                       List<String> idioma) {
 }
