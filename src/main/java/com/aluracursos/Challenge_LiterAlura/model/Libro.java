@@ -67,9 +67,8 @@ public class Libro {
 
     @Override
 public String toString(){
-    return  "titulo=" + titulo +
-            "autor=" + autor +
-            "idioma= " + idioma;
-
+    return  "Titulo = " + titulo + "\n" +
+            "Autor = " + autor.getNombre() + "\n" +
+            "Idioma = " + idioma;
 }
 }
