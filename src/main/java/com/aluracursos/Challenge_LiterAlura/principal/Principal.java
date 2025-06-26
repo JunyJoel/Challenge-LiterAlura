@@ -11,10 +11,7 @@ import com.aluracursos.Challenge_LiterAlura.service.ConsumoAPI;
 import com.aluracursos.Challenge_LiterAlura.service.ConvierteDatos;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -56,39 +53,43 @@ public class Principal {
             System.out.println(menu);
 
             //System.out.println("Selecciona la opcion deseada");
-            opcionElegida = teclado.nextInt();
-            teclado.nextLine();
+            try {
+                opcionElegida = teclado.nextInt();
 
-            switch (opcionElegida) {
-                case 1:
-                    buscarLibroPorTitulo();
-                    break;
-                case 2:
-                    System.out.println("Lista de libros en base de datos:");
-                    obtenerListaDeLibrosEnDB();
-                    break;
-                case 3:
-                    System.out.println("Lista de autores en base de datos:");
-                    obtenerListaDeAutoresEnDB();
-                    break;
-                case 4:
-                    //Listar autores vivos en determinada fecha.
-                    break;
-                case 5:
-                    //Listar libros por idioma.
-                    break;
-                case 0:
-                    System.out.println("Hasta luego...");
-                    opcionElegida = 0;
-                    break;
-                default:
-                    System.out.println("opcion no valida");
-                    break;
+                teclado.nextLine();
+
+                switch (opcionElegida) {
+                    case 1:
+                        buscarLibroPorTitulo();
+                        break;
+                    case 2:
+                        System.out.println("Lista de libros en base de datos:");
+                        obtenerListaDeLibrosEnDB();
+                        break;
+                    case 3:
+                        System.out.println("Lista de autores en base de datos:");
+                        obtenerListaDeAutoresEnDB();
+                        break;
+                    case 4:
+                        listaDeAutoresVivosPorFecha();
+                        break;
+                    case 5:
+                        listaDeLibrosPorIdioma();
+                        break;
+                    case 0:
+                        System.out.println("Hasta luego...");
+                        opcionElegida = 0;
+                        break;
+                    default:
+                        System.out.println("Opcion no valida");
+                        break;
+                }
+            }catch (InputMismatchException e){
+                System.out.println("Opcion no valida");
+                teclado.nextLine();
             }
         }
     }
-
-
 
     private void buscarLibroPorTitulo(){
         System.out.println("Ingresa el nombre del libro...");
@@ -147,6 +148,39 @@ public class Principal {
     private void obtenerListaDeAutoresEnDB(){
         List<String> autoresEnDB = autorRepositorio.obtenerAutores();
         System.out.println(String.join("\n",autoresEnDB));
+    }
+
+    private void listaDeAutoresVivosPorFecha(){
+        System.out.println("Inserta el año a 4 digitos para buscar autores");
+        String fechaBuscada = teclado.nextLine();
+        try {
+            Integer fecha = Integer.valueOf(fechaBuscada);
+            if (fecha > 1000 && fecha < 2050) {
+                List<String> autoresVivos = autorRepositorio.obtenerAutoresVivosPorFecha(fechaBuscada);
+                System.out.println("Autores vivos en el año " + fechaBuscada + ":");
+                System.out.println(String.join("\n", autoresVivos));
+            } else {
+                System.out.println("La fecha ingresada es incorrecta...");
+            }
+        }catch(Exception e){
+            System.out.println("La fecha ingresada es incorrecta...");
+        }
+    }
+
+    private void listaDeLibrosPorIdioma(){
+        List<String> idiomasEnDb = libroRepositorio.obtenerListaDeIdiomas();
+        //List<String> idiomas = idiomasEnDb.stream().toList().forEach(i->i.toUpperCase());
+        System.out.println("Selecciona entre los siguientes idiomas: ");
+        //System.out.println(String.join(", ",idiomasEnDb));
+        idiomasEnDb.forEach(i-> System.out.println(i.toUpperCase()));
+        String idiomaSeleccionado = teclado.nextLine();
+        if(idiomasEnDb.contains(idiomaSeleccionado.toLowerCase())) {
+            List<String> listaLibrosIdiomaSeleccionado = libroRepositorio.obtenerLibroPorIdiomaSeleccionado(idiomaSeleccionado.toLowerCase());
+            System.out.println("Los libros en " + idiomaSeleccionado.toUpperCase() + " son:");
+            System.out.println(String.join("\n", listaLibrosIdiomaSeleccionado));
+        }else{
+            System.out.println("idioma no incluido en DB");
+        }
     }
 
     public DatosLibro obtenerDatosDeAPI(String busquedaUsuario) {

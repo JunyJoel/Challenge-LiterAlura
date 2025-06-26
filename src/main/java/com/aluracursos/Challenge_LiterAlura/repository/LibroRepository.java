@@ -12,4 +12,8 @@ public interface LibroRepository extends JpaRepository<Libro,Long> {
     //List<Libro> findALlOrderById();
     @Query("SELECT l.titulo FROM Libro l")
     List<String> obtenerLibros();
+    @Query("SELECT DISTINCT l.idioma FROM Libro l")
+    List<String> obtenerListaDeIdiomas();
+    @Query("SELECT l.titulo FROM Libro l WHERE l.idioma = :idiomaSeleccionado")
+    List<String> obtenerLibroPorIdiomaSeleccionado(String idiomaSeleccionado);
 }
